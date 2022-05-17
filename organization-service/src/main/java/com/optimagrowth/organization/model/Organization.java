@@ -10,7 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "organization")
+@Table(name = "organizations")
 @Getter
 @Setter
 @ToString

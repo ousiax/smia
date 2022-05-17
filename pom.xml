@@ -69,6 +69,7 @@
 			<plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>dockerfile-maven-plugin</artifactId>
+				<inherited>false</inherited>
 				<configuration>
 					<skip>true</skip>
 				</configuration>

@@ -45,6 +45,23 @@ services:
       backend:
         aliases:
           - "eurekaserver"
+  gatewayserver:
+    image: ostock/gatewayserver:0.0.1-SNAPSHOT
+    ports:
+      - "8072:8072"
+    environment:
+      SPRING_PROFILES_ACTIVE: "dev"
+    depends_on:
+      # database:
+      #   condition: service_healthy
+      configserver:
+        condition: service_started
+      eurekaserver:
+        condition: service_started
+    networks:
+      backend:
+        aliases:
+          - "gateway"
   licensingservice:
     image: ostock/licensing-service:0.0.1-SNAPSHOT
     environment:

@@ -1,7 +1,7 @@
-version: '2.1'
 services:
   database:
     image: postgres:14
+    restart: on-failure
     ports:
       - "5432:5432"
     environment:
@@ -22,6 +22,7 @@ services:
       retries: 5
   configserver:
     image: ostock/configserver:0.0.1-SNAPSHOT
+    restart: on-failure
     ports:
        - "8071:8071"
     environment:
@@ -30,23 +31,35 @@ services:
       backend:
         aliases:
           - "configserver"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8071/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   eurekaserver:
     image: ostock/eurekaserver:0.0.1-SNAPSHOT
+    restart: on-failure
     ports:
       - "8070:8070"
     environment:
       SPRING_PROFILES_ACTIVE: "dev"
     depends_on:
-      database:
-        condition: service_healthy
+      #database:
+      #  condition: service_healthy
       configserver:
-        condition: service_started  
+        condition: service_healthy
     networks:
       backend:
         aliases:
           - "eurekaserver"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8070/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   gatewayserver:
     image: ostock/gatewayserver:0.0.1-SNAPSHOT
+    restart: on-failure
     ports:
       - "8072:8072"
     environment:
@@ -55,15 +68,16 @@ services:
       # database:
       #   condition: service_healthy
       configserver:
-        condition: service_started
+        condition: service_healthy
       eurekaserver:
-        condition: service_started
+        condition: service_healthy
     networks:
       backend:
         aliases:
           - "gateway"
   licensingservice:
     image: ostock/licensing-service:0.0.1-SNAPSHOT
+    restart: on-failure
     environment:
       SPRING_PROFILES_ACTIVE: "dev"
       ENCRYPT_KEY:       "IMSYMMETRIC"
@@ -71,13 +85,16 @@ services:
       database:
         condition: service_healthy
       configserver:
-        condition: service_started
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
     ports:
       - "8080:8080"
     networks:
       - backend
   organizationservice:
     image: ostock/organization-service:0.0.1-SNAPSHOT
+    restart: on-failure
     environment:
       SPRING_PROFILES_ACTIVE: "dev"
       ENCRYPT_KEY:       "IMSYMMETRIC"
@@ -85,7 +102,9 @@ services:
       database:
         condition: service_healthy
       configserver:
-        condition: service_started
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
     ports:
       - "8081:8081"
     networks:

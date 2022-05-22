@@ -52,6 +52,9 @@
 						<buildArgs>
 							<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
 						</buildArgs>
+                        <build>
+                          <pullNewerImage>false</pullNewerImage>
+                        </build>
 					</configuration>
 					<executions>
 						<execution>

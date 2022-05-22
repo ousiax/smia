@@ -36,4 +36,13 @@ public class FilterUtils {
     public ServerWebExchange setCorrelationId(ServerWebExchange exchange, String correlationId) {
         return this.setRequestHeader(exchange, CORRELATION_ID, correlationId);
     }
+
+    public String getAuthToken(HttpHeaders requestHeaders) {
+        List<String> tokens = requestHeaders.get(HttpHeaders.AUTHORIZATION);
+        if (tokens != null) {
+            return tokens.stream().findFirst().get();
+        } else {
+            return null;
+        }
+    }
 }

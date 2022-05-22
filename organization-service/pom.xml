@@ -11,6 +11,9 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Organization Service</name>
 	<description>Ostock Organization Service</description>
+	<properties>
+		<keycloak.version>18.0.0</keycloak.version>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
@@ -49,7 +52,6 @@
 			<artifactId>keycloak-spring-boot-starter</artifactId>
 		</dependency>
 
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -73,7 +75,7 @@
 			<dependency>
 				<groupId>org.keycloak.bom</groupId>
 				<artifactId>keycloak-adapter-bom</artifactId>
-				<version>18.0.0</version>
+				<version>${keycloak.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

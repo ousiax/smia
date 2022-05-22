@@ -11,9 +11,10 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
+            
       routes:
         - id: organization-service
-          uri: lb://organization-service2
+          uri: lb://organization-service
           predicates:
             - Path=/organization/**
           filters:

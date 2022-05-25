@@ -60,18 +60,3 @@ resilience4j.retry:
       waitDuration: 10000
       retry-exceptions:
         - java.util.concurrent.TimeoutException
-
-# spring:
-#   cloud:
-#     function:
-#       definition: orgChange;
-#     stream:
-#       bindings:
-#         orgChange-in-0:
-#           destination: orgChangeTopic
-#           group: licensingGroup
-#           content-type: application/json
-#       kafka:
-#         binder:
-#           auto-create-topics: true
-#           brokers: 192.168.0.119

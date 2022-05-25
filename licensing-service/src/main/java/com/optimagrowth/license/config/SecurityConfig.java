@@ -7,12 +7,10 @@ import org.keycloak.adapters.springsecurity.client.KeycloakClientRequestFactory;
 import org.keycloak.adapters.springsecurity.client.KeycloakRestTemplate;
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -50,26 +48,20 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
     }
 
-    @Autowired
-    public KeycloakClientRequestFactory keycloakClientRequestFactory;
-
-    // @Bean
-    // @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    // public KeycloakRestTemplate keycloakRestTemplate(
-    // KeycloakClientRequestFactory keycloakClientRequestFactory,
-    // LoadBalancerInterceptor interceptor) {
-    // KeycloakRestTemplate template = new
-    // KeycloakRestTemplate(keycloakClientRequestFactory);
-    // template.getInterceptors().add(interceptor);
-    // return template;
-    // }
-
     @LoadBalanced
     @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    // @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public KeycloakRestTemplate keycloakRestTemplate(
             KeycloakClientRequestFactory keycloakClientRequestFactory) {
         KeycloakRestTemplate template = new KeycloakRestTemplate(keycloakClientRequestFactory);
+        // List<ClientHttpRequestInterceptor> interceptors = template.getInterceptors();
+        // if (interceptors == null) {
+        // template.setInterceptors(Collections.singletonList(new
+        // UserContextInterceptor()));
+        // } else {
+        // interceptors.add(new UserContextInterceptor());
+        // template.setInterceptors(interceptors);
+        // }
         return template;
     }
 }

@@ -8,7 +8,7 @@ import org.keycloak.adapters.springsecurity.client.KeycloakRestTemplate;
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerInterceptor;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -53,13 +53,23 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     @Autowired
     public KeycloakClientRequestFactory keycloakClientRequestFactory;
 
+    // @Bean
+    // @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    // public KeycloakRestTemplate keycloakRestTemplate(
+    // KeycloakClientRequestFactory keycloakClientRequestFactory,
+    // LoadBalancerInterceptor interceptor) {
+    // KeycloakRestTemplate template = new
+    // KeycloakRestTemplate(keycloakClientRequestFactory);
+    // template.getInterceptors().add(interceptor);
+    // return template;
+    // }
+
+    @LoadBalanced
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public KeycloakRestTemplate keycloakRestTemplate(
-            KeycloakClientRequestFactory keycloakClientRequestFactory,
-            LoadBalancerInterceptor interceptor) {
+            KeycloakClientRequestFactory keycloakClientRequestFactory) {
         KeycloakRestTemplate template = new KeycloakRestTemplate(keycloakClientRequestFactory);
-        template.getInterceptors().add(interceptor);
         return template;
     }
 }

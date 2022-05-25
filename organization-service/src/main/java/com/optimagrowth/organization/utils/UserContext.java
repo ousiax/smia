@@ -19,3 +19,4 @@ public class UserContext {
     private String userId = new String();
     private String organizationId = new String();
 }
+

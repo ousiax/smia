@@ -3,9 +3,13 @@ package com.optimagrowth.license;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Consumer;
 
+import com.optimagrowth.license.events.model.OrganizationChangeModel;
 import com.optimagrowth.license.utils.UserContextInterceptor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -23,7 +27,9 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 @RefreshScope
 @EnableDiscoveryClient
 @EnableFeignClients
+// @EnableBinding(Sink.class)
 public class LicensingServiceApplication {
+	private Logger logger = LoggerFactory.getLogger(LicensingServiceApplication.class);
 
 	public static void main(String[] args) {
 		SpringApplication.run(LicensingServiceApplication.class, args);
@@ -56,5 +62,19 @@ public class LicensingServiceApplication {
 			template.setInterceptors(interceptors);
 		}
 		return template;
+	}
+
+	// @StreamListener(Sink.INPUT)
+	// public void loggerSink(OrganizationChangeModel orgChange) {
+	// logger.debug("Received an {} event for organization id {}",
+	// orgChange.getAction(),
+	// orgChange.getOrganizationId());
+	// }
+
+	@Bean
+	public Consumer<OrganizationChangeModel> orgChange() {
+		return orgChange -> logger.debug(
+				"Received an {} event for organization id {}", orgChange.getAction(),
+				orgChange.getOrganizationId());
 	}
 }

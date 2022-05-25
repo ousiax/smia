@@ -6,6 +6,8 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 @SpringBootApplication
 @RefreshScope
+// @EnableResourceServer`
+// @EnableBinding(Source.class)
 public class OrganizationServiceApplication {
 
 	public static void main(String[] args) {

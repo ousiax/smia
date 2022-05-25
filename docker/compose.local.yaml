@@ -1,0 +1,6 @@
+services:
+  kafkabroker:
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://node-0:9092,PLAINTEXT_INTERNAL://kafkabroker:29092
+    extra_hosts:
+      - "node-0:192.168.0.119"

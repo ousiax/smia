@@ -34,7 +34,7 @@ public class OrganizationController {
         service.update(organization);
     }
 
-    @RolesAllowed({ "ADMIN", "USER" })
+    // @RolesAllowed({ "ADMIN", "USER" })
     @PostMapping
     public ResponseEntity<Organization> saveOrganization(@RequestBody Organization organization) {
         return ResponseEntity.ok(service.create(organization));
